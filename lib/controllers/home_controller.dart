@@ -26,8 +26,7 @@ class HomeController extends GetxController {
   Future<void> updateData({bool isForce = false}) async {
     if (!busy.value || isForce) {
       busy.value = true;
-      var t = await repository.getRepository.getUserInfo();
-      _info.value = t;
+      _info.value = await repository.getRepository.getUserInfo();
       busy.value = false;
     }
   }
