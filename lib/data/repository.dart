@@ -6,8 +6,16 @@ class DataRepository {
 
   DataRepository(this.api);
 
-  getInfo({required String id}) async {
-    return await api.getInfo(id);
+  getDeviceInfo({required String id}) async {
+    return await api.getDeviceInfo(id);
+  }
+
+  setDeviceEnabled({required String id, required bool isEnabled}) async {
+    return await api.setDeviceEnabled(id, isEnabled);
+  }
+
+  getUserInfo() async {
+    return await api.getUserInfo();
   }
 }
 
