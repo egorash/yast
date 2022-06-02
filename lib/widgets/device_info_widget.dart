@@ -15,6 +15,7 @@ class DeviceInfoWidget extends Container {
     return Card(
       child: Obx(() {
         if (controller.info != null) {
+          // вынести в контроллер
           var isOnOff = controller.info!.capabilities.where(
               (element) => element.type == "devices.capabilities.on_off");
 
