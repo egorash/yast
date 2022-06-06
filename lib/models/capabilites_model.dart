@@ -20,7 +20,9 @@ class CapabilitiesModel {
     retrievable = json['retrievable'] ?? false;
     type = json['type'] ?? "";
     parameters = ParametersModel.fromJson(json['parameters']);
-    state = StateModel.fromJson(json['state']);
+    state = json['state'] != null
+        ? StateModel.fromJson(json['state'])
+        : StateModel(instance: "null", value: false);
     lastUpdated = json['last_updated'] ?? 0;
   }
 

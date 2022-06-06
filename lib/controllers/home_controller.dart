@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:yast/data/repository.dart';
+import 'package:yast/models/room_model.dart';
 import 'package:yast/models/user_info_model.dart';
 
 class HomeController extends GetxController {
@@ -27,6 +28,8 @@ class HomeController extends GetxController {
     if (!busy.value || isForce) {
       busy.value = true;
       _info.value = await repository.getRepository.getUserInfo();
+      _info.value?.rooms.sort(
+          ((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase())));
       busy.value = false;
     }
   }

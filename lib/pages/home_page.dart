@@ -8,45 +8,46 @@ class HomePage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: const Text('HomePage')),
-        body: Column(
-          children: [
-            Expanded(
-              child: Obx((() {
-                if (controller.info != null) {
-                  return ListView.builder(
-                      itemCount: controller.info!.rooms.length,
-                      itemBuilder: ((context, index) {
-                        return Column(
-                          children: [
-                            ListTile(
-                              title: Text(controller.info!.rooms[index].name),
-                            ),
-                            Container(
-                              height: 150,
-                              child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: controller
-                                      .info!.rooms[index].devices.length,
-                                  itemBuilder: ((context, index2) {
-                                    return Container(
-                                      width: 400,
-                                      child: DeviceInfoWidget(controller
-                                          .info!.rooms[index].devices[index2]),
-                                    );
-                                  })),
-                            )
-                          ],
-                        );
-                      }));
-                } else {
-                  controller.updateData();
-                  return const Center(child: CircularProgressIndicator());
-                }
-              })),
-            )
-          ],
-        ));
+    return Obx((() {
+          if (controller.info != null) {
+            List<Widget> tabs = [];
+            List<Widget> pages = [];
+
+            controller.info!.rooms.forEach(
+              (element) {
+                tabs.add(Tab(
+                  text: element.name,
+                ));
+                pages.add(
+                  GridView.builder(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 6),
+                      itemCount: element.devices.length,
+                      itemBuilder: (BuildContext ctx, index) {
+                        return DeviceInfoWidget(element.devices[index]);
+                      }),
+                );
+              },
+            );
+
+            return DefaultTabController(
+                initialIndex: 0,
+                length: tabs.length,
+                child: Scaffold(
+                  appBar: AppBar(
+                    bottom: TabBar(
+                      tabs: tabs,
+                    ),
+                  ),
+                  body: TabBarView(
+                    children: pages,
+                  ),
+                ));
+          } else {
+            controller.updateData();
+            return const Center(child: CircularProgressIndicator());
+          }
+        }));
   }
 }

@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:yast/data/secret.dart';
 import 'package:yast/models/device_info_model.dart';
 import 'package:yast/models/user_info_model.dart';
 
 const baseUrl = 'https://api.iot.yandex.net/v1.0';
-const _token = "AQAAAAASQfawAAeEGN9Nao14Q0YYnE9Xp5i3-88";
+// const token = "YOUR_AUTH_TOKEN";
 
 class ApiClient {
   final Dio httpClient;
@@ -13,7 +14,7 @@ class ApiClient {
   Future<UserInfoModel> getUserInfo() async {
     try {
       var response = await httpClient.get("$baseUrl/user/info",
-          options: Options(headers: {"Authorization": "Bearer $_token"}));
+          options: Options(headers: {"Authorization": "Bearer $token"}));
       if (response.statusCode == 200) {
         return UserInfoModel.fromJson(response.data);
       } else {
@@ -27,7 +28,7 @@ class ApiClient {
   getDeviceInfo(String id) async {
     try {
       var response = await httpClient.get("$baseUrl/devices/$id",
-          options: Options(headers: {"Authorization": "Bearer $_token"}));
+          options: Options(headers: {"Authorization": "Bearer $token"}));
       if (response.statusCode == 200) {
         return DeviceInfoModel.fromJson(response.data);
       } else
@@ -42,7 +43,7 @@ class ApiClient {
       await httpClient.post("$baseUrl/devices/actions",
           data:
               '{ "devices": [ { "id": "$id", "actions": [ { "type": "devices.capabilities.on_off", "state": { "instance": "on", "value": $isEnabled } } ] } ] }',
-          options: Options(headers: {"Authorization": "Bearer $_token"}));
+          options: Options(headers: {"Authorization": "Bearer $token"}));
     } catch (e) {
       throw Exception(e);
     }
